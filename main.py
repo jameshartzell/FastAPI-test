@@ -2,6 +2,8 @@
 from fastapi import FastAPI
 from enum import Enum
 
+#install dependencies w/ 'pip install "fastapi[all]"
+#start the server w/ 'uvicorn main:app --reload'
 app = FastAPI()
 
 #smoke and mirrors for the sake of progress courtesy of FastAPI's technical writing team
@@ -79,3 +81,7 @@ async def read_item(item_id: str, q: str | None = None):
     if q:
         return {"item_id": item_id, "q": q}
     return {"item_id": item_id}
+
+#bookmark https://fastapi.tiangolo.com/tutorial/query-params/
+#dropped off at heading Query parameter type conversion...
+#to be continued
