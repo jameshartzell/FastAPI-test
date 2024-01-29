@@ -1,6 +1,8 @@
 #written while reading through their docs on Jan24, listening to YT vids, and three beers deep at the time of this comment
 from typing import Annotated, Any, List, Union
-from fastapi import Body, Cookie, FastAPI, Header, Path
+
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi import Body, Cookie, FastAPI, Header, Path, Response
 from enum import Enum
 from pydantic import BaseModel, EmailStr, Field, HttpUrl
 
@@ -11,6 +13,18 @@ app = FastAPI()
 #smoke and mirrors for the sake of progress courtesy of FastAPI's technical writing team
 #----not relevant, but when did 'foo' 'bar' become the default placeholder text in documentation as opposed to something that takes less time to type like 'asdf' or 'test'? idc if it's related/equivalent to 'FUBAR', my theory is that some douche who's already retired started doing this to dissuade or otherwise micro-shame his direct reports or stakeholders from reading his documentation so they wouldn't notice he wasn't maintaining it
 fake_items_db = [{"item_name": "A"}, {"item_name": "Fukkin Uhhhhh"}, {"item_name": "Item"}]
+
+#more smoke and mirrors for later examples
+more_fake_items = {
+    "foo": {"name": "Foo", "price": 50.2},
+    "bar": {"name": "Bar", "description": "The Bar fighters", "price": 62, "tax": 20.2},
+    "baz": {
+        "name": "Baz",
+        "description": "There goes my baz",
+        "price": 50.2,
+        "tax": 10.5,
+    },
+}
 
 #declaring a pydantic enum for use as a path var
 #it sounds pedantic *rimshot*, but doing this is going to be almost as short as references to your own boilerplate, except this also has the benefit of handling invalid url params without requiring you to do anything else (I might actually prefer to be anal retentive about that because maybe if someone sends my server an invalid url param, I might want to block their IP or user agent on the spot. Your mileage may vary)
@@ -143,10 +157,6 @@ async def read_item(item_id: str, q: str | None = None):
     if q:
         return {"item_id": item_id, "q": q}
     return {"item_id": item_id}
-
-#bookmark https://fastapi.tiangolo.com/tutorial/query-params/
-#dropped off at heading Query parameter type conversion...
-#to be continued
 
 #everything is still an item and bools exist weow
 @app.get("/items4/{item_id}")
@@ -325,6 +335,45 @@ async def create_user(user: UserIn) -> UserIn:
     return user
 #----and obv don't handle PWs in plain text
 
+#the 'user' var here from the body can be validated/filtered as a different pyd model on the way out
 @app.post("/user2/", response_model=UserOut)
 async def create_user(user: UserIn) -> Any:
     return user
+
+#redirects and raw json responses
+@app.get("/portal")
+async def get_portal(teleport: bool = False) -> Response:
+    if teleport:
+        return RedirectResponse(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    return JSONResponse(content={"message": "Try teleport=true"})
+
+#these built-in response type classes can be used as return types as well
+@app.get("/teleport")
+async def get_teleport() -> RedirectResponse:
+    return RedirectResponse(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+
+#the fastapi response model can be disabled
+@app.get("/portal2", response_model=None)
+async def get_portal(teleport: bool = False) -> Response | dict:
+    if teleport:
+        return RedirectResponse(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    return {"message": "Here's your interdimensional portal."}
+
+#skipping response_model_exclude_unset argment for endpoint decorators (it exists)
+
+#you can include only specific fields of a pyd model or exclude specific fields of a pyd model
+#with the 'response_model_include' and 'response_model_exclude' args (they take both lists and sets)
+@app.get(
+    "/items/{item_id}/name",
+    response_model=Item,
+    response_model_include={"name", "description"},
+)
+async def read_item_name(item_id: str):
+    return more_fake_items[item_id]
+
+
+@app.get("/items/{item_id}/public", response_model=Item, response_model_exclude={"tax"})
+async def read_item_public_data(item_id: str):
+    return more_fake_items[item_id]
+
+#stopping at Extra Models at https://fastapi.tiangolo.com/tutorial/extra-models/
