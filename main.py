@@ -1,10 +1,10 @@
 #written while reading through their docs on Jan24, listening to YT vids, and three beers deep at the time of this comment
 from typing import Annotated, Any, List, Union
-
 from fastapi.responses import JSONResponse, RedirectResponse
-from fastapi import Body, Cookie, FastAPI, Header, Path, Response
+from fastapi import Body, Cookie, FastAPI, Header, Path, Response, BackgroundTasks
 from enum import Enum
 from pydantic import BaseModel, EmailStr, Field, HttpUrl
+import time
 
 #install dependencies w/ 'pip install "fastapi[all]"
 #start the server w/ 'uvicorn main:app --reload'
@@ -377,3 +377,16 @@ async def read_item_public_data(item_id: str):
     return more_fake_items[item_id]
 
 #stopping at Extra Models at https://fastapi.tiangolo.com/tutorial/extra-models/
+
+#WE INTERRUPT THIS PROGRAM TO BRING YOU AN EXPLORATION OF BACKGROUND TASKS (THE REASON I'M EVALUATING FASTAPI IN THE FIRST PLACE)
+def log_request_in_db():
+    print('bgt started')
+    time.sleep(3)
+    print('bgt finished')
+    
+@app.get('/bgt')
+async def bgt(background_tasks: BackgroundTasks):
+    print('endpoint called')
+    background_tasks.add_task(log_request_in_db)
+    print('response sent')
+    return {'result':'pog'}
