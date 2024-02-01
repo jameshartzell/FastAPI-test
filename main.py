@@ -378,7 +378,8 @@ async def read_item_public_data(item_id: str):
 
 #stopping at Extra Models at https://fastapi.tiangolo.com/tutorial/extra-models/
 
-#WE INTERRUPT THIS PROGRAM TO BRING YOU AN EXPLORATION OF BACKGROUND TASKS (THE REASON I'M EVALUATING FASTAPI IN THE FIRST PLACE)
+#WE INTERRUPT THIS PROGRAM TO BRING YOU AN EXPLORATION OF BACKGROUND TASKS
+#(THE REASON I'M EVALUATING FASTAPI IN THE FIRST PLACE)
 def log_request_in_db():
     print('bgt started')
     time.sleep(3)
