@@ -16,11 +16,10 @@ COPY main.py /usr/src/app/
 
 RUN pip install -r requirements.txt
 
+RUN export PORT=8000
 RUN export UVICORN_PORT=$PORT
-#RUN export PORT=8000
 RUN echo $PORT
 RUN echo $UVICORN_PORT
-
 EXPOSE $UVICORN_PORT
 
 RUN uvicorn main:app --reload --host 0.0.0.0 --port $UVICORN_PORT
