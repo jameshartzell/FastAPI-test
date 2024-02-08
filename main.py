@@ -393,4 +393,7 @@ async def bgt(background_tasks: BackgroundTasks):
     return {'result':'pog'}
 
 if __name__ == '__main__':
-    app.run(debug=True, port=os.getenv("PORT", default=5000))
+    try:
+        app.run(debug=True, port=os.getenv("PORT", default=5000))
+    except Exception as e:
+        print(e)
