@@ -1,6 +1,5 @@
 typing
 fastapi
-enum
 pydantic
 pydantic[email]
 time
