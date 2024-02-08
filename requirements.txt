@@ -1,6 +1,6 @@
 typing
 fastapi
-pydantic
+pydantic-2.5.3
 pydantic[email]
 time
 uvicorn
