@@ -1,5 +1,5 @@
 typing
-pydantic-2.5.3
+pydantic
 fastapi
 pydantic[email]
 time
