@@ -2,5 +2,4 @@ typing
 pydantic
 fastapi
 pydantic[email]
-time
 uvicorn
