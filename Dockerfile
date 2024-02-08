@@ -23,4 +23,4 @@ RUN echo $UVICORN_PORT
 
 EXPOSE $UVICORN_PORT
 
-RUN uvicorn main:app --reload --host 0.0.0.0
+RUN uvicorn main:app --reload --host 0.0.0.0 --port $UVICORN_PORT
