@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi import Body, Cookie, FastAPI, Header, Path, Response, BackgroundTasks
 from enum import Enum
 from pydantic import BaseModel, EmailStr, Field, HttpUrl
-import time
+import time,os
 
 #install dependencies w/ 'pip install "fastapi[all]"
 #start the server w/ 'uvicorn main:app --reload'
@@ -391,3 +391,6 @@ async def bgt(background_tasks: BackgroundTasks):
     background_tasks.add_task(log_request_in_db)
     print('response sent')
     return {'result':'pog'}
+
+if __name__ == '__main__':
+    app.run(debug=True, port=os.getenv("PORT", default=5000))
