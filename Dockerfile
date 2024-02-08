@@ -16,7 +16,8 @@ COPY main.py /usr/src/app/
 
 RUN pip install -r requirements.txt
 
-RUN export UVICORN_PORT=$`PORT`
+#RUN export UVICORN_PORT=$`PORT`
+RUN export PORT=8000
 
 EXPOSE 8000
 
