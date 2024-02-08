@@ -11,7 +11,7 @@ RUN pip3 install --no-cache --upgrade pip setuptools
 
 RUN pip install -r requirements.txt
 
-COPY . .
+COPY * /usr/src/app/
 
 EXPOSE 8000
 
