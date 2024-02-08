@@ -16,6 +16,8 @@ COPY main.py /usr/src/app/
 
 RUN pip install -r requirements.txt
 
+RUN export UVICORN_PORT=echo $PORT
+
 EXPOSE 8000
 
-RUN uvicorn main:app --reload --host 0.0.0.0 --port $PORT
+RUN uvicorn main:app --reload --host 0.0.0.0 --workers 2
