@@ -1,6 +1,6 @@
 typing
-fastapi
 pydantic-2.5.3
+fastapi
 pydantic[email]
 time
 uvicorn
